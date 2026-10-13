@@ -1,0 +1,972 @@
+
+```html
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#101010">
+<meta name="description" content="ReKauf – Verkaufe dein gebrauchtes iPhone, Samsung-Gerät, iPad oder deine Nintendo-Konsole. Entdecke unsere Ankaufspreise und sende dein Angebot.">
+<title>ReKauf – Wir kaufen deine Technik</title>
+
+<style>
+:root {
+  --bg: #0b0b0b;
+  --surface: #131313;
+  --surface2: #1a1a1a;
+  --border: rgba(255,255,255,.1);
+  --white: #fff;
+  --muted: #a4a4a4;
+  --accent: #c8ff65;
+  --radius: 22px;
+  --max: 1200px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 15% 10%, rgba(200,255,101,.07), transparent 35%),
+    radial-gradient(ellipse at 90% 45%, rgba(255,255,255,.035), transparent 30%);
+}
+a { color: inherit; text-decoration: none; }
+button, input, select, textarea { font: inherit; }
+button { cursor: pointer; }
+img { display: block; max-width: 100%; }
+.container { width: min(var(--max), calc(100% - 40px)); margin: auto; }
+section { padding: 100px 0; }
+.section-label {
+  color: var(--accent); text-transform: uppercase; letter-spacing: 2px;
+  font-size: 11px; font-weight: 800; margin-bottom: 14px;
+}
+.section-title {
+  font-size: clamp(32px, 5vw, 55px); line-height: 1.08;
+  letter-spacing: -2px; max-width: 750px; margin-bottom: 18px;
+}
+.section-desc { color: var(--muted); max-width: 640px; font-size: 16px; }
+.accent { color: var(--accent); }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 10px; border: 1px solid transparent; border-radius: 999px;
+  padding: 14px 23px; font-size: 14px; font-weight: 750;
+  transition: transform .25s, background .25s, border-color .25s;
+}
+.btn:hover { transform: translateY(-3px); }
+.btn-primary { background: var(--accent); color: #111; }
+.btn-primary:hover { background: #d8ff9a; }
+.btn-secondary { background: rgba(255,255,255,.04); border-color: var(--border); }
+.btn-secondary:hover { background: rgba(255,255,255,.1); }
+.btn-small { padding: 10px 16px; font-size: 12px; }
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 8px 13px; border: 1px solid var(--border);
+  border-radius: 999px; color: #ddd; background: rgba(255,255,255,.03);
+  font-size: 12px;
+}
+.dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+
+/* NAVIGATION */
+header {
+  position: sticky; top: 0; z-index: 100;
+  border-bottom: 1px solid rgba(255,255,255,.07);
+  background: rgba(10,10,10,.82); backdrop-filter: blur(18px);
+}
+.nav {
+  min-height: 76px; display: flex; align-items: center;
+  justify-content: space-between; gap: 25px;
+}
+.logo { font-size: 25px; font-weight: 900; letter-spacing: -1.5px; }
+.logo span { color: var(--accent); }
+.nav-links { display: flex; align-items: center; gap: 27px; }
+.nav-links a { font-size: 13px; color: #c8c8c8; transition: color .2s; }
+.nav-links a:hover { color: var(--accent); }
+.nav-actions { display: flex; align-items: center; gap: 10px; }
+.menu-toggle {
+  display: none; background: transparent; color: white;
+  border: 1px solid var(--border); border-radius: 12px;
+  width: 43px; height: 43px; font-size: 21px;
+}
+
+/* HERO */
+.hero { padding: 80px 0 70px; }
+.hero-grid {
+  display: grid; grid-template-columns: 1.05fr .95fr;
+  gap: 55px; align-items: center;
+}
+.hero h1 {
+  font-size: clamp(45px, 6.7vw, 79px); line-height: .99;
+  letter-spacing: -5px; margin: 25px 0;
+}
+.hero h1 span { color: var(--accent); }
+.hero-text { color: var(--muted); max-width: 510px; font-size: 17px; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 30px 0; }
+.hero-points { display: flex; flex-wrap: wrap; gap: 19px; color: #bbb; font-size: 12px; }
+.hero-points span::before { content: "✓"; color: var(--accent); margin-right: 7px; font-weight: 900; }
+.hero-visual { position: relative; min-height: 470px; }
+.hero-photo {
+  position: absolute; inset: 0 0 0 12px; width: calc(100% - 12px);
+  height: 450px; object-fit: cover; border-radius: 30px;
+  filter: brightness(.75); border: 1px solid var(--border);
+}
+.photo-overlay {
+  position: absolute; inset: 0; border-radius: 30px;
+  background: linear-gradient(0deg, rgba(0,0,0,.85), transparent 65%);
+}
+.price-float {
+  position: absolute; left: -15px; bottom: 25px;
+  background: rgba(20,20,20,.92); backdrop-filter: blur(16px);
+  border: 1px solid var(--border); border-radius: 20px;
+  padding: 20px 23px; box-shadow: 0 20px 60px #0007;
+}
+.price-float small { color: var(--muted); display: block; font-size: 11px; }
+.price-float strong { display: block; font-size: 34px; letter-spacing: -1px; }
+.price-float em { font-style: normal; color: var(--accent); font-size: 11px; }
+.floating-tag {
+  position: absolute; top: 22px; right: -12px;
+  background: var(--accent); color: #111; font-size: 11px;
+  font-weight: 850; padding: 11px 14px; border-radius: 12px;
+}
+
+/* TRUST STRIP */
+.trust-strip { border-block: 1px solid var(--border); background: rgba(255,255,255,.018); }
+.trust-grid { display: grid; grid-template-columns: repeat(4,1fr); }
+.trust-item { padding: 24px 15px; text-align: center; border-right: 1px solid var(--border); }
+.trust-item:last-child { border-right: 0; }
+.trust-item strong { display: block; font-size: 14px; }
+.trust-item span { color: var(--muted); font-size: 11px; }
+
+/* CATEGORIES */
+.category-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; margin-top: 38px; }
+.category-card {
+  position: relative; overflow: hidden; border: 1px solid var(--border);
+  background: var(--surface); border-radius: var(--radius); min-height: 330px;
+  transition: transform .3s, border-color .3s;
+}
+.category-card:hover { transform: translateY(-7px); border-color: #555; }
+.category-card img {
+  width: 100%; height: 210px; object-fit: cover; opacity: .76;
+  transition: transform .6s, opacity .4s;
+}
+.category-card:hover img { transform: scale(1.06); opacity: 1; }
+.category-content { padding: 22px; position: relative; }
+.category-content h3 { font-size: 23px; letter-spacing: -.7px; }
+.category-content p { color: var(--muted); font-size: 13px; margin: 5px 0 14px; }
+.text-link { color: var(--accent); font-size: 13px; font-weight: 750; }
+
+/* SEARCH AND PRICE LIST */
+.price-section { background: #101010; border-block: 1px solid var(--border); }
+.toolbar {
+  display: flex; gap: 12px; margin: 30px 0 22px;
+  align-items: center; flex-wrap: wrap;
+}
+.search-wrap { flex: 1; min-width: 230px; position: relative; }
+.search-wrap input, .field input, .field select, .field textarea, .toolbar select {
+  width: 100%; background: #171717; border: 1px solid var(--border);
+  border-radius: 13px; padding: 14px 15px; color: white; outline: none;
+  transition: border-color .2s, background .2s;
+}
+.search-wrap input:focus, .field input:focus, .field select:focus,
+.field textarea:focus, .toolbar select:focus { border-color: var(--accent); background: #1b1b1b; }
+.toolbar select { width: auto; min-width: 170px; }
+.filter-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
+.filter-btn {
+  border: 1px solid var(--border); background: #171717; color: #bbb;
+  border-radius: 999px; padding: 9px 15px; font-size: 12px;
+}
+.filter-btn.active, .filter-btn:hover { background: var(--accent); color: #111; border-color: var(--accent); }
+.price-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 13px; }
+.device-card {
+  border: 1px solid var(--border); background: var(--surface);
+  border-radius: 17px; padding: 19px; transition: transform .25s, border-color .25s;
+}
+.device-card:hover { transform: translateY(-4px); border-color: #555; }
+.device-top { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
+.device-top h3 { font-size: 15px; line-height: 1.35; }
+.device-category { font-size: 10px; color: var(--muted); margin-top: 5px; }
+.storage-tag {
+  background: #252525; border-radius: 7px; padding: 4px 7px;
+  color: #ccc; font-size: 10px; white-space: nowrap;
+}
+.device-price { margin: 19px 0 14px; }
+.device-price small { color: var(--muted); font-size: 11px; display: block; }
+.device-price strong { font-size: 30px; letter-spacing: -1px; }
+.price-conditions { border-top: 1px solid var(--border); padding-top: 13px; display: grid; gap: 6px; }
+.condition-line { display: flex; justify-content: space-between; font-size: 11px; gap: 8px; }
+.condition-line span { color: var(--muted); }
+.condition-line strong { font-weight: 650; }
+.price-note { color: var(--muted); font-size: 12px; margin-top: 20px; }
+.empty-state {
+  grid-column: 1/-1; text-align: center; padding: 45px 15px;
+  border: 1px dashed var(--border); border-radius: 18px; color: var(--muted);
+}
+.show-more-wrap { display: flex; justify-content: center; margin-top: 25px; }
+
+/* STEPS */
+.steps-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; margin-top: 40px; }
+.step-card { background: var(--surface); border: 1px solid var(--border); padding: 27px; border-radius: 20px; }
+.step-number {
+  width: 43px; height: 43px; border-radius: 14px; background: var(--accent);
+  color: #111; display: grid; place-items: center; font-weight: 900; margin-bottom: 24px;
+}
+.step-card h3 { font-size: 19px; margin-bottom: 9px; }
+.step-card p { color: var(--muted); font-size: 13px; }
+
+/* FORM */
+.form-section { background: #101010; border-block: 1px solid var(--border); }
+.form-layout { display: grid; grid-template-columns: .75fr 1.25fr; gap: 50px; align-items: start; }
+.form-info { position: sticky; top: 110px; }
+.form-info ul { list-style: none; margin-top: 25px; display: grid; gap: 13px; }
+.form-info li { color: #ccc; font-size: 13px; }
+.form-info li::before { content: "✓"; color: var(--accent); margin-right: 10px; }
+.form-card { padding: 28px; border-radius: 24px; border: 1px solid var(--border); background: var(--surface); }
+.form-card h3 { font-size: 23px; margin-bottom: 5px; }
+.form-card > p { color: var(--muted); font-size: 12px; margin-bottom: 24px; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 17px; }
+.field { display: flex; flex-direction: column; gap: 7px; }
+.field.full { grid-column: 1/-1; }
+.field label { font-size: 12px; color: #ddd; font-weight: 650; }
+.field small { color: var(--muted); font-size: 10px; }
+.field select { appearance: auto; }
+.field select option { background: #171717; color: white; }
+.field textarea { min-height: 100px; resize: vertical; }
+.checkbox-line { display: flex; align-items: flex-start; gap: 10px; color: var(--muted); font-size: 11px; margin: 18px 0; }
+.checkbox-line input { margin-top: 4px; accent-color: var(--accent); }
+.form-submit { width: 100%; border: none; }
+.notice { font-size: 11px; color: var(--muted); margin-top: 13px; }
+.form-message { display: none; padding: 14px; margin-top: 15px; border-radius: 12px; background: #222; font-size: 12px; }
+
+/* FAQ */
+.faq-layout { display: grid; grid-template-columns: .8fr 1.2fr; gap: 50px; }
+.faq-list { display: grid; gap: 10px; }
+.faq-item { border: 1px solid var(--border); background: var(--surface); border-radius: 15px; overflow: hidden; }
+.faq-question {
+  padding: 19px; width: 100%; background: transparent; color: white;
+  border: none; text-align: left; display: flex; justify-content: space-between;
+  gap: 15px; font-size: 14px; font-weight: 700;
+}
+.faq-question span:last-child { color: var(--accent); font-size: 20px; }
+.faq-answer { display: none; color: var(--muted); font-size: 13px; padding: 0 19px 19px; }
+.faq-item.open .faq-answer { display: block; }
+.faq-item.open .faq-question span:last-child { transform: rotate(45deg); }
+
+/* CTA AND FOOTER */
+.final-cta {
+  background: var(--accent); color: #111; padding: 60px;
+  border-radius: 28px; display: flex; justify-content: space-between;
+  align-items: center; gap: 30px;
+}
+.final-cta h2 { font-size: clamp(30px,4vw,47px); line-height: 1.05; letter-spacing: -2px; }
+.final-cta p { margin-top: 10px; font-size: 14px; opacity: .72; }
+.final-cta .btn { background: #111; color: white; }
+footer { border-top: 1px solid var(--border); padding: 45px 0 25px; }
+.footer-main { display: flex; justify-content: space-between; gap: 30px; flex-wrap: wrap; padding-bottom: 35px; }
+.footer-brand p { color: var(--muted); font-size: 12px; max-width: 300px; margin-top: 12px; }
+.footer-links { display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start; }
+.footer-links a { color: #bbb; font-size: 12px; }
+.footer-links a:hover { color: var(--accent); }
+.footer-bottom { border-top: 1px solid var(--border); padding-top: 20px; color: #777; font-size: 11px; display: flex; justify-content: space-between; gap: 15px; flex-wrap: wrap; }
+
+/* REVEAL ANIMATIONS */
+.reveal { opacity: 0; transform: translateY(25px); transition: opacity .65s ease, transform .65s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
+  .reveal { opacity: 1; transform: none; }
+}
+
+/* RESPONSIVE */
+@media(max-width: 950px) {
+  .nav-links { gap: 14px; }
+  .nav-links a { font-size: 12px; }
+  .hero-grid { gap: 30px; }
+  .price-grid { grid-template-columns: repeat(2,1fr); }
+  .form-layout, .faq-layout { grid-template-columns: 1fr; gap: 30px; }
+  .form-info { position: static; }
+}
+@media(max-width: 720px) {
+  section { padding: 70px 0; }
+  .container { width: min(100% - 28px, var(--max)); }
+  .nav { min-height: 67px; }
+  .menu-toggle { display: block; }
+  .nav-actions .btn { display: none; }
+  .nav-links {
+    display: none; position: absolute; top: 67px; left: 0; right: 0;
+    padding: 18px 22px 24px; background: #111; border-bottom: 1px solid var(--border);
+    flex-direction: column; align-items: stretch; gap: 0;
+  }
+  .nav-links.open { display: flex; }
+  .nav-links a { padding: 13px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+  .hero { padding-top: 55px; }
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero h1 { letter-spacing: -3px; }
+  .hero-visual { min-height: 360px; }
+  .hero-photo { height: 350px; }
+  .price-float { left: 0; bottom: 12px; }
+  .floating-tag { right: 0; }
+  .trust-grid { grid-template-columns: repeat(2,1fr); }
+  .trust-item:nth-child(2) { border-right: 0; }
+  .trust-item:nth-child(-n+2) { border-bottom: 1px solid var(--border); }
+  .category-grid, .steps-grid { grid-template-columns: 1fr; }
+  .category-card { min-height: 300px; }
+  .category-card img { height: 190px; }
+  .price-grid { grid-template-columns: 1fr; }
+  .toolbar select { width: 100%; }
+  .form-card { padding: 20px; }
+  .form-grid { grid-template-columns: 1fr; }
+  .field.full { grid-column: auto; }
+  .final-cta { padding: 30px 23px; flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="container nav">
+    <a class="logo" href="#start" aria-label="ReKauf Startseite">Re<span>Kauf</span>.</a>
+    <nav class="nav-links" id="navLinks" aria-label="Hauptnavigation">
+      <a href="#kategorien">Was wir kaufen</a>
+      <a href="#preise">Preisliste</a>
+      <a href="#ablauf">So funktioniert's</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="nav-actions">
+      <a href="#verkaufen" class="btn btn-primary btn-small">Gerät verkaufen ↗</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Menü öffnen" aria-expanded="false">☰</button>
+    </div>
+  </div>
+</header>
+
+<main>
+<section class="hero" id="start">
+  <div class="container hero-grid">
+    <div class="reveal">
+      <div class="eyebrow"><span class="dot"></span> Privater Ankauf · Persönlich & unkompliziert</div>
+      <h1>Deine Technik.<br>Dein Geld.<br><span>ReKauf.</span></h1>
+      <p class="hero-text">
+        Dein altes Smartphone liegt nur herum? Verkaufe dein iPhone, Samsung,
+        iPad oder deine Nintendo-Konsole unkompliziert. Schau dir unsere
+        Festpreise an, sende dein Angebot und wir klären die Details persönlich.
+      </p>
+      <div class="hero-actions">
+        <a href="#verkaufen" class="btn btn-primary">Angebot abgeben ↗</a>
+        <a href="#preise" class="btn btn-secondary">Preise entdecken ↓</a>
+      </div>
+      <div class="hero-points">
+        <span>Preise transparent</span>
+        <span>Persönlicher Kontakt</span>
+        <span>Kein komplizierter Prozess</span>
+      </div>
+    </div>
+    <div class="hero-visual reveal">
+      <img class="hero-photo" src="https://images.unsplash.com/photo-1585060544812-6b45742d762f?crop=entropy&cs=srgb&fm=jpg&q=85&w=1200" alt="Smartphone als Beispiel für gebrauchte Technik">
+      <div class="photo-overlay"></div>
+      <div class="floating-tag">SELL YOUR TECH</div>
+      <div class="price-float">
+        <small>Beispiel: iPhone 15 Pro · 128 GB</small>
+        <strong>620 €</strong>
+        <em>Maximaler Listenpreis bei Zustand „Wie neu“</em>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="trust-strip">
+  <div class="container trust-grid">
+    <div class="trust-item"><strong>Transparente Preise</strong><span>Preise vorab einsehen</span></div>
+    <div class="trust-item"><strong>Direkter Kontakt</strong><span>Details persönlich klären</span></div>
+    <div class="trust-item"><strong>Viele Modelle</strong><span>Smartphones und Konsolen</span></div>
+    <div class="trust-item"><strong>Einfacher Ablauf</strong><span>In wenigen Schritten</span></div>
+  </div>
+</div>
+
+<section id="kategorien">
+  <div class="container">
+    <div class="section-label reveal">Was wir ankaufen</div>
+    <h2 class="section-title reveal">Technik, die du nicht<br>mehr <span class="accent">brauchst.</span></h2>
+    <p class="section-desc reveal">Wähle deine Gerätekategorie, suche dein Modell und prüfe, ob bereits ein Festpreis hinterlegt ist.</p>
+    <div class="category-grid">
+      <article class="category-card reveal">
+        <img src="https://images.unsplash.com/photo-1585060544812-6b45742d762f?crop=entropy&cs=srgb&fm=jpg&q=85&w=1200" alt="Smartphone" loading="lazy">
+        <div class="category-content">
+          <h3>Smartphones</h3><p>Apple iPhone und Samsung Galaxy.</p>
+          <a class="text-link category-jump" href="#preise" data-filter="Smartphones">Smartphones entdecken ↗</a>
+        </div>
+      </article>
+      <article class="category-card reveal">
+        <img src="https://images.unsplash.com/photo-1527698266440-12104e498b76?crop=entropy&cs=srgb&fm=jpg&q=85&w=1200" alt="Tablet" loading="lazy">
+        <div class="category-content">
+          <h3>Tablets</h3><p>iPads und Samsung Galaxy Tabs.</p>
+          <a class="text-link category-jump" href="#preise" data-filter="Tablets">Tablets entdecken ↗</a>
+        </div>
+      </article>
+      <article class="category-card reveal">
+        <img src="https://images.unsplash.com/photo-1604846887565-640d2f52d564?crop=entropy&cs=srgb&fm=jpg&q=85&w=1200" alt="Gaming-Konsole" loading="lazy">
+        <div class="category-content">
+          <h3>Nintendo & Gaming</h3><p>Switch, DS, 3DS und weitere Modelle.</p>
+          <a class="text-link category-jump" href="#preise" data-filter="Konsolen">Konsolen entdecken ↗</a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="price-section" id="preise">
+  <div class="container">
+    <div class="section-label reveal">Unsere Geräteliste</div>
+    <h2 class="section-title reveal">Finde dein Modell.<br><span class="accent">Prüfe den Preis.</span></h2>
+    <p class="section-desc reveal">Suche nach Marke oder Modell. Hinterlegte Preise beziehen sich auf den jeweiligen Zustand. Für weitere Modelle kannst du ein individuelles Angebot senden.</p>
+
+    <div class="toolbar reveal">
+      <div class="search-wrap">
+        <input type="search" id="deviceSearch" placeholder="Modell suchen, z. B. iPhone 11 oder Galaxy S21" aria-label="Geräte suchen">
+      </div>
+      <select id="categorySelect" aria-label="Kategorie auswählen">
+        <option value="Alle">Alle Kategorien</option>
+        <option value="Smartphones">Smartphones</option>
+        <option value="Tablets">Tablets</option>
+        <option value="Konsolen">Konsolen</option>
+      </select>
+      <select id="brandSelect" aria-label="Marke auswählen">
+        <option value="Alle">Alle Marken</option>
+        <option value="Apple">Apple</option>
+        <option value="Samsung">Samsung</option>
+        <option value="Nintendo">Nintendo</option>
+      </select>
+    </div>
+    <div class="filter-row reveal">
+      <button class="filter-btn active" data-category="Alle">Alle Geräte</button>
+      <button class="filter-btn" data-category="Smartphones">Smartphones</button>
+      <button class="filter-btn" data-category="Tablets">Tablets</button>
+      <button class="filter-btn" data-category="Konsolen">Konsolen</button>
+    </div>
+    <div class="price-grid" id="priceGrid" aria-live="polite"></div>
+    <div class="show-more-wrap">
+      <button class="btn btn-secondary" id="showMore">Weitere Modelle anzeigen ↓</button>
+    </div>
+    <p class="price-note">Hinweis: Angezeigte Festpreise sind Orientierungswerte für den jeweils angegebenen Zustand. Zusätzliche Modelle ohne hinterlegten Preis werden individuell geprüft. Ein endgültiger Preis kann erst nach Prüfung des Geräts vereinbart werden.</p>
+  </div>
+</section>
+
+<section id="ablauf">
+  <div class="container">
+    <div class="section-label reveal">Schnell und einfach</div>
+    <h2 class="section-title reveal">In drei Schritten<br>zum <span class="accent">Angebot.</span></h2>
+    <p class="section-desc reveal">Du musst keine komplizierten Inserate erstellen. Wähle dein Gerät, beschreibe seinen Zustand und sende uns deine Anfrage.</p>
+    <div class="steps-grid">
+      <article class="step-card reveal">
+        <div class="step-number">01</div>
+        <h3>Gerät auswählen</h3>
+        <p>Suche dein Smartphone, Tablet oder deine Nintendo-Konsole in der Modellübersicht. Prüfe vorhandene Festpreise und wähle dein Modell im Formular.</p>
+      </article>
+      <article class="step-card reveal">
+        <div class="step-number">02</div>
+        <h3>Zustand beschreiben</h3>
+        <p>Gib Speichergröße, Akkuzustand, Gebrauchsspuren und deinen Wunschpreis an. Ehrliche Angaben helfen dabei, ein realistisches Angebot zu besprechen.</p>
+      </article>
+      <article class="step-card reveal">
+        <div class="step-number">03</div>
+        <h3>Details vereinbaren</h3>
+        <p>Nach deiner Anfrage können wir die Angaben, den Preis und die Übergabe persönlich klären. Ein Verkauf kommt erst zustande, wenn beide Seiten zustimmen.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="form-section" id="verkaufen">
+  <div class="container form-layout">
+    <div class="form-info reveal">
+      <div class="section-label">Dein Gerät verkaufen</div>
+      <h2 class="section-title">Mach aus alter Technik <span class="accent">Geld.</span></h2>
+      <p class="section-desc">Fülle die wichtigsten Angaben aus. Deine Anfrage wird vorbereitet, damit du die Details unkompliziert über den gewählten Kontaktweg besprechen kannst.</p>
+      <ul>
+        <li>Modell und Zustand angeben</li>
+        <li>Wunschpreis nennen</li>
+        <li>Fragen und Details persönlich klären</li>
+        <li>Keine automatische Kaufzusage</li>
+      </ul>
+    </div>
+    <div class="form-card reveal">
+      <h3>Dein Verkaufsangebot</h3>
+      <p>Felder mit * müssen ausgefüllt werden.</p>
+      <form id="offerForm">
+        <div class="form-grid">
+          <div class="field">
+            <label for="name">Dein Name *</label>
+            <input id="name" name="name" autocomplete="name" required placeholder="Vorname">
+          </div>
+          <div class="field">
+            <label for="contact">Kontakt (optional)</label>
+            <input id="contact" name="contact" placeholder="E-Mail oder Telefonnummer">
+          </div>
+          <div class="field">
+            <label for="offerCategory">Kategorie *</label>
+            <select id="offerCategory" name="category" required>
+              <option value="">Bitte auswählen</option>
+              <option>Smartphones</option><option>Tablets</option><option>Konsolen</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="brand">Marke *</label>
+            <select id="brand" name="brand" required>
+              <option value="">Bitte auswählen</option>
+              <option>Apple</option><option>Samsung</option><option>Nintendo</option><option>Andere</option>
+            </select>
+          </div>
+          <div class="field full">
+            <label for="model">Genaues Modell *</label>
+            <input id="model" name="model" required placeholder="z. B. Apple iPhone 13 Pro 128 GB">
+          </div>
+          <div class="field">
+            <label for="storage">Speichergröße</label>
+            <select id="storage" name="storage">
+              <option>Nicht angegeben</option><option>32 GB</option><option>64 GB</option>
+              <option>128 GB</option><option>256 GB</option><option>512 GB</option>
+              <option>1 TB</option><option>Andere / unbekannt</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="battery">Akkuzustand (bei Smartphones)</label>
+            <select id="battery" name="battery">
+              <option>Nicht angegeben</option><option>90–100 %</option><option>80–89 %</option>
+              <option>Unter 80 %</option><option>Akku nicht geprüft</option><option>Nicht zutreffend</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="condition">Allgemeiner Zustand *</label>
+            <select id="condition" name="condition" required>
+              <option value="">Bitte auswählen</option><option>Wie neu</option><option>Leichte Kratzer</option>
+              <option>Starke Gebrauchsspuren</option><option>Defekt</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="box">Originalverpackung</label>
+            <select id="box" name="box"><option>Nicht angegeben</option><option>Ja</option><option>Nein</option></select>
+          </div>
+          <div class="field">
+            <label for="wishPrice">Wunschpreis in Euro *</label>
+            <input id="wishPrice" name="wishPrice" type="number" min="0" step="1" required placeholder="z. B. 250">
+          </div>
+          <div class="field full">
+            <label for="notes">Weitere Angaben</label>
+            <textarea id="notes" name="notes" placeholder="Farbe, Defekte, Zubehör, Rechnung oder weitere Informationen ..."></textarea>
+          </div>
+        </div>
+        <label class="checkbox-line">
+          <input type="checkbox" id="confirm" required>
+          <span>Ich bestätige, dass meine Angaben nach bestem Wissen stimmen. Die Anfrage ist unverbindlich und stellt noch keinen abgeschlossenen Kaufvertrag dar.</span>
+        </label>
+        <button type="submit" class="btn btn-primary form-submit">Angebot vorbereiten ↗</button>
+        <div class="form-message" id="formMessage" role="status"></div>
+        <p class="notice">Bitte sende keine Passwörter, Entsperrcodes oder anderen vertraulichen Zugangsdaten mit. Entferne vor einer Übergabe deine persönlichen Daten vom Gerät.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="container faq-layout">
+    <div class="reveal">
+      <div class="section-label">Häufige Fragen</div>
+      <h2 class="section-title">Gut zu wissen,<br>bevor du <span class="accent">verkaufst.</span></h2>
+      <p class="section-desc">Hier findest du Antworten auf die wichtigsten Fragen rund um Angebote, Preise und die Übergabe deiner Geräte.</p>
+    </div>
+    <div class="faq-list reveal">
+      <div class="faq-item">
+        <button class="faq-question"><span>Sind die angezeigten Preise garantiert?</span><span>+</span></button>
+        <div class="faq-answer">Die hinterlegten Preise sind die angezeigten Listenwerte für den jeweiligen Zustand. Der tatsächliche Ankauf muss vorab bestätigt werden. Zustand, Funktion, Modell und weitere Details können bei der Vereinbarung eine Rolle spielen.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question"><span>Was ist, wenn mein Modell nicht gelistet ist?</span><span>+</span></button>
+        <div class="faq-answer">Nutze das Verkaufsformular und trage das genaue Modell ein. Du kannst einen Wunschpreis angeben. Nicht gelistete Modelle werden individuell besprochen; ein Preis wird nicht automatisch garantiert.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question"><span>Kauft ReKauf auch defekte Geräte?</span><span>+</span></button>
+        <div class="faq-answer">Du kannst auch ein defektes Gerät anbieten. Beschreibe den Fehler so genau wie möglich. Ob ein Ankauf möglich ist und welcher Preis infrage kommt, muss individuell geklärt werden.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question"><span>Wie läuft die Übergabe ab?</span><span>+</span></button>
+        <div class="faq-answer">Ort, Zeitpunkt, Zustand und endgültiger Preis müssen vorab zwischen den Beteiligten vereinbart werden. Übergib das Gerät erst, wenn alle Details geklärt sind.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question"><span>Was soll ich vor dem Verkauf beachten?</span><span>+</span></button>
+        <div class="faq-answer">Sichere deine wichtigen Daten, melde dich von deinen Konten ab, deaktiviere Gerätesperren und setze das Gerät erst nach einer Datensicherung auf Werkseinstellungen zurück. Entferne SIM- und Speicherkarten. Gib niemals dein Passwort weiter.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question"><span>Ist die Anfrage verbindlich?</span><span>+</span></button>
+        <div class="faq-answer">Nein. Das Formular bereitet eine unverbindliche Anfrage vor. Ein Verkauf kommt erst zustande, wenn Preis, Zustand und Übergabe ausdrücklich vereinbart sind.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="final-cta reveal">
+      <div>
+        <h2>Dein Gerät verdient<br>ein zweites Leben.</h2>
+        <p>Finde dein Modell und sende jetzt eine unverbindliche Anfrage.</p>
+      </div>
+      <a href="#verkaufen" class="btn">Jetzt Angebot abgeben ↗</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-main">
+      <div class="footer-brand">
+        <a class="logo" href="#start">Re<span>Kauf</span>.</a>
+        <p>Privater Ankauf gebrauchter Elektronik. Transparent, persönlich und unkompliziert.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#kategorien">Kategorien</a>
+        <a href="#preise">Preisliste</a>
+        <a href="#ablauf">Ablauf</a>
+        <a href="#verkaufen">Angebot abgeben</a>
+        <a href="#faq">FAQ</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> ReKauf · Alle Preise in Euro (€)</span>
+      <span>Privater Ankauf gebrauchter Elektronik</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ---------------------------------------------------------
+   GERÄTEDATEN
+   Preise in Euro, Reihenfolge:
+   Wie neu / Leichte Kratzer / Starke Spuren / Defekt
+   Modelle ohne festgelegte Preise erhalten keine erfundenen Werte.
+---------------------------------------------------------- */
+const devices = [
+  {name:"Nintendo Switch Lite",brand:"Nintendo",category:"Konsolen",storage:"32 GB",prices:[110,90,65,25]},
+  {name:"Nintendo Switch OLED",brand:"Nintendo",category:"Konsolen",storage:"64 GB",prices:[220,190,140,60]},
+  {name:"Apple iPhone 13",brand:"Apple",category:"Smartphones",storage:"128 GB",prices:[300,255,190,80]},
+  {name:"Apple iPhone 14",brand:"Apple",category:"Smartphones",storage:"128 GB",prices:[390,330,250,110]},
+  {name:"Apple iPhone 15 Pro",brand:"Apple",category:"Smartphones",storage:"128 GB",prices:[620,540,420,180]},
+  {name:"Samsung Galaxy A52s 5G",brand:"Samsung",category:"Smartphones",storage:"128 GB",prices:[140,115,80,30]},
+  {name:"Samsung Galaxy S24",brand:"Samsung",category:"Smartphones",storage:"256 GB",prices:[450,390,290,120]},
+  {name:"Apple iPad (9. Gen)",brand:"Apple",category:"Tablets",storage:"64 GB",prices:[170,140,100,40]},
+  {name:"Apple iPad Air (5. Gen)",brand:"Apple",category:"Tablets",storage:"64 GB",prices:[330,280,210,90]},
+  {name:"Samsung Galaxy Tab S8",brand:"Samsung",category:"Tablets",storage:"128 GB",prices:[290,240,170,70]}
+];
+
+const modelGroups = {
+  Apple: {
+    Smartphones: [
+      "iPhone 6","iPhone 6 Plus","iPhone 6s","iPhone 6s Plus","iPhone SE (1. Gen)",
+      "iPhone 7","iPhone 7 Plus","iPhone 8","iPhone 8 Plus","iPhone X",
+      "iPhone XR","iPhone XS","iPhone XS Max","iPhone 11","iPhone 11 Pro",
+      "iPhone 11 Pro Max","iPhone SE (2. Gen)","iPhone 12 mini","iPhone 12",
+      "iPhone 12 Pro","iPhone 12 Pro Max","iPhone 13 mini","iPhone 13 Pro",
+      "iPhone 13 Pro Max","iPhone 14 Plus","iPhone 14 Pro","iPhone 14 Pro Max",
+      "iPhone 15","iPhone 15 Plus","iPhone 15 Pro Max","iPhone 16","iPhone 16 Plus",
+      "iPhone 16 Pro","iPhone 16 Pro Max","iPhone 16e","iPhone 17","iPhone 17 Pro",
+      "iPhone 17 Pro Max","iPhone Air"
+    ],
+    Tablets: [
+      "iPad (5. Gen)","iPad (6. Gen)","iPad (7. Gen)","iPad (8. Gen)",
+      "iPad (10. Gen)","iPad (A16)","iPad mini 4","iPad mini (5. Gen)",
+      "iPad mini (6. Gen)","iPad mini (A17 Pro)","iPad Air 2","iPad Air (3. Gen)",
+      "iPad Air (4. Gen)","iPad Air (6. Gen)","iPad Air (M3)","iPad Pro 9.7",
+      "iPad Pro 10.5","iPad Pro 11","iPad Pro 12.9","iPad Pro (M4)"
+    ]
+  },
+  Samsung: {
+    Smartphones: [
+      "Galaxy S6","Galaxy S6 edge","Galaxy S6 edge+","Galaxy S7","Galaxy S7 edge",
+      "Galaxy S8","Galaxy S8+","Galaxy S9","Galaxy S9+","Galaxy S10e","Galaxy S10",
+      "Galaxy S10+","Galaxy S10 Lite","Galaxy S20","Galaxy S20+","Galaxy S20 Ultra",
+      "Galaxy S20 FE","Galaxy S21","Galaxy S21+","Galaxy S21 Ultra","Galaxy S21 FE",
+      "Galaxy S22","Galaxy S22+","Galaxy S22 Ultra","Galaxy S23","Galaxy S23+",
+      "Galaxy S23 Ultra","Galaxy S23 FE","Galaxy S24+","Galaxy S24 Ultra",
+      "Galaxy S24 FE","Galaxy S25","Galaxy S25+","Galaxy S25 Ultra","Galaxy S25 Edge",
+      "Galaxy Note5","Galaxy Note8","Galaxy Note9","Galaxy Note10","Galaxy Note10+",
+      "Galaxy Note20","Galaxy Note20 Ultra","Galaxy A3 (2016)","Galaxy A5 (2016)",
+      "Galaxy A7 (2016)","Galaxy A3 (2017)","Galaxy A5 (2017)","Galaxy A7 (2017)",
+      "Galaxy A6","Galaxy A6+","Galaxy A8","Galaxy A8+","Galaxy A10","Galaxy A10s",
+      "Galaxy A20","Galaxy A20e","Galaxy A30","Galaxy A40","Galaxy A50","Galaxy A50s",
+      "Galaxy A51","Galaxy A52","Galaxy A52s 5G","Galaxy A53 5G","Galaxy A54 5G",
+      "Galaxy A55 5G","Galaxy A56 5G","Galaxy A70","Galaxy A71","Galaxy A72",
+      "Galaxy A73","Galaxy A80","Galaxy A90 5G","Galaxy A12","Galaxy A13",
+      "Galaxy A14","Galaxy A15","Galaxy A16","Galaxy A22","Galaxy A23","Galaxy A24",
+      "Galaxy A25","Galaxy A32","Galaxy A33","Galaxy A34","Galaxy A35","Galaxy A36",
+      "Galaxy A42","Galaxy A52 5G","Galaxy A72 5G","Galaxy M10","Galaxy M12",
+      "Galaxy M13","Galaxy M14","Galaxy M15","Galaxy M20","Galaxy M21","Galaxy M22",
+      "Galaxy M23","Galaxy M30","Galaxy M31","Galaxy M32","Galaxy M33","Galaxy M34",
+      "Galaxy M35","Galaxy M51","Galaxy M52","Galaxy M53","Galaxy M54","Galaxy M55",
+      "Galaxy J3 (2016)","Galaxy J5 (2016)","Galaxy J7 (2016)","Galaxy J3 (2017)",
+      "Galaxy J5 (2017)","Galaxy J7 (2017)","Galaxy Z Flip","Galaxy Z Flip 3",
+      "Galaxy Z Flip 4","Galaxy Z Flip 5","Galaxy Z Flip 6","Galaxy Z Flip 7",
+      "Galaxy Z Fold2","Galaxy Z Fold3","Galaxy Z Fold4","Galaxy Z Fold5",
+      "Galaxy Z Fold6","Galaxy Z Fold7"
+    ],
+    Tablets: [
+      "Galaxy Tab A (2016)","Galaxy Tab A 8.0","Galaxy Tab A 10.1",
+      "Galaxy Tab A7","Galaxy Tab A7 Lite","Galaxy Tab A8","Galaxy Tab A9",
+      "Galaxy Tab A9+","Galaxy Tab S2","Galaxy Tab S3","Galaxy Tab S4",
+      "Galaxy Tab S5e","Galaxy Tab S6","Galaxy Tab S6 Lite","Galaxy Tab S7",
+      "Galaxy Tab S7+","Galaxy Tab S7 FE","Galaxy Tab S8","Galaxy Tab S8+",
+      "Galaxy Tab S8 Ultra","Galaxy Tab S9","Galaxy Tab S9+","Galaxy Tab S9 Ultra",
+      "Galaxy Tab S9 FE","Galaxy Tab S10+","Galaxy Tab S10 Ultra","Galaxy Tab S10 FE"
+    ]
+  },
+  Nintendo: {
+    Konsolen: [
+      "Nintendo Switch","Nintendo Switch Lite","Nintendo Switch OLED",
+      "Nintendo Wii","Nintendo Wii U","Nintendo DS","Nintendo DS Lite",
+      "Nintendo DSi","Nintendo DSi XL","Nintendo 2DS","Nintendo 3DS",
+      "Nintendo 3DS XL","New Nintendo 3DS","New Nintendo 3DS XL",
+      "New Nintendo 2DS XL","Game Boy","Game Boy Pocket","Game Boy Color",
+      "Game Boy Advance","Game Boy Advance SP","Game Boy Micro",
+      "Nintendo Entertainment System (NES)","Super Nintendo (SNES)",
+      "Nintendo 64","Nintendo GameCube","Nintendo Classic Mini NES",
+      "Nintendo Classic Mini SNES"
+    ]
+  }
+};
+
+/* Ergänzt weitere Modelle, ohne die bestehenden Preisdatensätze zu überschreiben. */
+const knownKeys = new Set(devices.map(d => d.name.toLowerCase()));
+Object.entries(modelGroups).forEach(([brand, categories]) => {
+  Object.entries(categories).forEach(([category, names]) => {
+    names.forEach(model => {
+      const fullName = brand === "Apple" ? "Apple " + model :
+                       brand === "Samsung" ? "Samsung " + model : model;
+      if (!knownKeys.has(fullName.toLowerCase())) {
+        devices.push({
+          name: fullName, brand, category,
+          storage: "Je nach Variante", prices: null
+        });
+        knownKeys.add(fullName.toLowerCase());
+      }
+    });
+  });
+});
+
+const grid = document.getElementById("priceGrid");
+const searchInput = document.getElementById("deviceSearch");
+const categorySelect = document.getElementById("categorySelect");
+const brandSelect = document.getElementById("brandSelect");
+const showMoreButton = document.getElementById("showMore");
+const pageSize = 12;
+let visibleCount = pageSize;
+let activeCategory = "Alle";
+
+function euro(value) {
+  return new Intl.NumberFormat("de-DE", {
+    style: "currency", currency: "EUR", maximumFractionDigits: 0
+  }).format(value);
+}
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, char => ({
+    "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
+  }[char]));
+}
+function filteredDevices() {
+  const query = searchInput.value.trim().toLowerCase();
+  const category = categorySelect.value !== "Alle" ? categorySelect.value : activeCategory;
+  const brand = brandSelect.value;
+  return devices.filter(device => {
+    const matchesQuery = device.name.toLowerCase().includes(query) ||
+      device.brand.toLowerCase().includes(query) ||
+      device.category.toLowerCase().includes(query);
+    const matchesCategory = category === "Alle" || device.category === category;
+    const matchesBrand = brand === "Alle" || device.brand === brand;
+    return matchesQuery && matchesCategory && matchesBrand;
+  });
+}
+function deviceCard(device) {
+  const price = device.prices
+    ? `<div class="device-price"><small>Bis zu</small><strong>${euro(device.prices[0])}</strong></div>
+       <div class="price-conditions">
+         <div class="condition-line"><span>Wie neu</span><strong>${euro(device.prices[0])}</strong></div>
+         <div class="condition-line"><span>Leichte Kratzer</span><strong>${euro(device.prices[1])}</strong></div>
+         <div class="condition-line"><span>Starke Spuren</span><strong>${euro(device.prices[2])}</strong></div>
+         <div class="condition-line"><span>Defekt</span><strong>${euro(device.prices[3])}</strong></div>
+       </div>`
+    : `<div class="device-price"><small>Individuelle Bewertung</small><strong style="font-size:22px">Preis auf Anfrage</strong></div>
+       <p class="price-note">Preis hängt von Modell, Zustand und Variante ab.</p>`;
+  return `<article class="device-card">
+    <div class="device-top">
+      <div><h3>${escapeHTML(device.name)}</h3>
+      <div class="device-category">${escapeHTML(device.brand)} · ${escapeHTML(device.category)}</div></div>
+      <span class="storage-tag">${escapeHTML(device.storage)}</span>
+    </div>
+    ${price}
+    <button class="btn btn-secondary btn-small choose-device" style="width:100%;margin-top:17px"
+      data-name="${escapeHTML(device.name)}" data-brand="${escapeHTML(device.brand)}"
+      data-category="${escapeHTML(device.category)}">Gerät anbieten ↗</button>
+  </article>`;
+}
+function renderDevices() {
+  const results = filteredDevices();
+  const shown = results.slice(0, visibleCount);
+  grid.innerHTML = shown.length
+    ? shown.map(deviceCard).join("")
+    : `<div class="empty-state">Keine passenden Geräte gefunden.<br>Versuche einen anderen Suchbegriff oder sende eine Anfrage über das Formular.</div>`;
+  showMoreButton.style.display = results.length > visibleCount ? "inline-flex" : "none";
+  document.querySelectorAll(".choose-device").forEach(button => {
+    button.addEventListener("click", () => {
+      document.getElementById("model").value = button.dataset.name;
+      document.getElementById("brand").value =
+        ["Apple","Samsung","Nintendo"].includes(button.dataset.brand) ? button.dataset.brand : "Andere";
+      document.getElementById("offerCategory").value = button.dataset.category;
+      document.getElementById("verkaufen").scrollIntoView({behavior:"smooth"});
+    });
+  });
+}
+searchInput.addEventListener("input", () => { visibleCount = pageSize; renderDevices(); });
+categorySelect.addEventListener("change", () => {
+  activeCategory = "Alle"; document.querySelectorAll(".filter-btn").forEach(b => b.classList.toggle("active", b.dataset.category === "Alle"));
+  visibleCount = pageSize; renderDevices();
+});
+brandSelect.addEventListener("change", () => { visibleCount = pageSize; renderDevices(); });
+document.querySelectorAll(".filter-btn").forEach(button => {
+  button.addEventListener("click", () => {
+    activeCategory = button.dataset.category;
+    categorySelect.value = "Alle";
+    document.querySelectorAll(".filter-btn").forEach(b => b.classList.toggle("active", b === button));
+    visibleCount = pageSize; renderDevices();
+  });
+});
+document.querySelectorAll(".category-jump").forEach(link => {
+  link.addEventListener("click", () => {
+    activeCategory = link.dataset.filter;
+    categorySelect.value = "Alle";
+    document.querySelectorAll(".filter-btn").forEach(b => b.classList.toggle("active", b.dataset.category === activeCategory));
+    visibleCount = pageSize;
+    renderDevices();
+  });
+});
+showMoreButton.addEventListener("click", () => {
+  visibleCount += pageSize;
+  renderDevices();
+});
+renderDevices();
+
+/* NAVIGATION */
+const menuToggle = document.getElementById("menuToggle");
+const navLinks = document.getElementById("navLinks");
+menuToggle.addEventListener("click", () => {
+  const open = navLinks.classList.toggle("open");
+  menuToggle.setAttribute("aria-expanded", String(open));
+  menuToggle.textContent = open ? "×" : "☰";
+});
+navLinks.querySelectorAll("a").forEach(link => link.addEventListener("click", () => {
+  navLinks.classList.remove("open");
+  menuToggle.setAttribute("aria-expanded", "false");
+  menuToggle.textContent = "☰";
+}));
+
+/* FAQ */
+document.querySelectorAll(".faq-question").forEach(button => {
+  button.addEventListener("click", () => {
+    const item = button.closest(".faq-item");
+    item.classList.toggle("open");
+    button.setAttribute("aria-expanded", String(item.classList.contains("open")));
+  });
+});
+
+/* SCROLL REVEAL */
+const revealObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("visible");
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, {threshold: .12});
+document.querySelectorAll(".reveal").forEach(el => revealObserver.observe(el));
+
+/* FORMULAR: Erstellt eine Nachricht. Kein Backend wird vorgetäuscht. */
+document.getElementById("offerForm").addEventListener("submit", event => {
+  event.preventDefault();
+  const form = event.currentTarget;
+  if (!form.reportValidity()) return;
+  const data = new FormData(form);
+  const message = [
+    "Hallo ReKauf, ich möchte folgendes Gerät anbieten:",
+    "",
+    "Name: " + data.get("name"),
+    "Kontakt: " + (data.get("contact") || "Nicht angegeben"),
+    "Kategorie: " + data.get("category"),
+    "Marke: " + data.get("brand"),
+    "Modell: " + data.get("model"),
+    "Speicher: " + data.get("storage"),
+    "Akkuzustand: " + data.get("battery"),
+    "Zustand: " + data.get("condition"),
+    "Originalverpackung: " + data.get("box"),
+    "Wunschpreis: " + data.get("wishPrice") + " EUR",
+    "Weitere Angaben: " + (data.get("notes") || "Keine"),
+    "",
+    "Die Anfrage ist unverbindlich."
+  ].join("\n");
+
+  /*
+    WICHTIG:
+    Ersetze die Beispielnummer unten durch deine eigene WhatsApp-Nummer
+    im internationalen Format ohne +, Leerzeichen oder Bindestriche.
+    Beispiel-Format für Luxemburg: 352XXXXXXXX.
+    Ohne echte Nummer wird nur die Nachricht angezeigt.
+  */
+  const WHATSAPP_NUMBER = "352000000000";
+  const messageBox = document.getElementById("formMessage");
+  messageBox.style.display = "block";
+
+  if (WHATSAPP_NUMBER !== "352000000000") {
+    const url = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(message);
+    messageBox.innerHTML = "Deine Nachricht wurde vorbereitet. WhatsApp öffnet sich in einem neuen Fenster.";
+    const link = document.createElement("a");
+    link.href = url;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.className = "btn btn-primary btn-small";
+    link.style.marginTop = "12px";
+    link.textContent = "Anfrage in WhatsApp öffnen ↗";
+    messageBox.appendChild(document.createElement("br"));
+    messageBox.appendChild(link);
+  } else {
+    messageBox.textContent = "Deine Angaben sind vorbereitet. Damit die Anfrage versendet werden kann, muss der Betreiber zuerst seine echte WhatsApp-Nummer im Website-Code eintragen. Deine Daten wurden nicht automatisch gespeichert oder versendet.";
+    const copyButton = document.createElement("button");
+    copyButton.type = "button";
+    copyButton.className = "btn btn-secondary btn-small";
+    copyButton.style.marginTop = "12px";
+    copyButton.textContent = "Anfrage kopieren";
+    copyButton.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(message);
+        copyButton.textContent = "Kopiert ✓";
+      } catch {
+        const textarea = document.createElement("textarea");
+        textarea.value = message;
+        messageBox.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        textarea.remove();
+        copyButton.textContent = "Kopiert ✓";
+      }
+    });
+    messageBox.appendChild(document.createElement("br"));
+    messageBox.appendChild(copyButton);
+  }
+});
+document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
+```
